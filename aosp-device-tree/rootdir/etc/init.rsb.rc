@@ -1,0 +1,3 @@
+on property:sys.boot_completed=1
+    # Fossil start writing rsb initial data
+    exec u:r:init-rsb:s0 system root system -- /vendor/bin/init.rsb.sh

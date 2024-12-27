@@ -1,0 +1,9 @@
+#
+# Copyright (c) 2021 Fossil Group, Inc.
+# All Rights Reserved.
+# Confidential and Proprietary - Fossil Group, Inc.
+#
+
+import /vendor/etc/init/hw/init.fossilcommon.rc
+import /vendor/etc/init/hw/init.fs_postboot_script.rc
+

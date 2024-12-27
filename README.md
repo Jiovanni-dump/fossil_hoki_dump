@@ -1,0 +1,14 @@
+# hoki-user 9 PFHD.211201.017 1648389875849 release-keys
+- manufacturer: fossil
+- platform: msm8937
+- codename: hoki
+- flavor: hoki-user
+- release: 9
+- id: PFHD.211201.017
+- incremental: 1648389875849
+- tags: release-keys
+- fingerprint: Fossil/hoki/hoki:9/PFHD.211201.017/1648389875849:user/release-keys
+- is_ab: false
+- brand: Fossil
+- branch: hoki-user-9-PFHD.211201.017-1648389875849-release-keys
+- repo: fossil_hoki_dump
