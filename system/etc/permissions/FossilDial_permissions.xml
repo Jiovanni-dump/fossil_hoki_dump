@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <privapp-permissions package="com.fossil.phone">
+        <permission name="android.permission.CALL_PRIVILEGED"/>
+        <permission name="android.permission.CONTROL_INCALL_EXPERIENCE"/>
+        <permission name="android.permission.MODIFY_CELL_BROADCASTS"/>
+        <permission name="android.permission.MODIFY_PHONE_STATE"/>
+        <permission name="android.permission.REGISTER_CALL_PROVIDER"/>
+    </privapp-permissions>
+</permissions>

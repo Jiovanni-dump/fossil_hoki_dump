@@ -1,0 +1,185 @@
+// @file sns_pah_access.proto
+//
+// Defines the API for external access
+//
+// Copyright (c) 2018 PixArt Imaging Inc.
+// All Rights Reserved.
+// Confidential and Proprietary - PixArt Imaging Inc.
+
+syntax = "proto2";
+import "nanopb.proto";
+
+// External access:
+// The external access feature defines several low-level operations,
+// such as write/read registers, read gpio status.
+
+// Client side, important things to know:
+// a1. This feature is an abstraction violation.
+//     Normally you interact with a sensor by sending config through
+//     high-level standard APIs. Unless there is no other choice, you
+//     should avoid using this feature.
+// a2. You have to understand the physical sensor.
+//     Knows what behaviors of the physical sensor would change as you
+//     write some registers. Knows what time you can and cannot write
+//     or read registers. Knows how long you have to wait for after
+//     writing registers.
+// a3. You have to understand how a SSC driver works.
+//     Especially the lifecycle of sensor instance. When there exists
+//     no request for all sensors, the SSC driver will destory the shared
+//     sensor instance. It implies that states of the physical sensor
+//     would be reset.
+// a4. Using this feature would affect standard streaming.
+//     While the sensor is streaming, you should not write some registers
+//     for a function that standard streaming APIs have been provided. It
+//     leads the sensor streaming to undefined behaviors. For example to
+//     write registers to modify sample rate, or watermark.
+
+// Client side, tips:
+// b1. Sending sns_pah_access_config messages that contains unique
+//     serial numbers makes sure the sensor receives the same count of
+//     the sns_pah_access_event requested messages, also makes sure the
+//     client receives the same count of the sns_pah_access_event messages
+//     the sensor responded.
+
+// Sensor side:
+// c1. When the sensor receives one request, it has to send exact one
+//     corresponded response.
+// c2. The sensor receives requests by handling the sns_pah_access_config
+//     message with msgid SNS_PAH_ACCESS_MSGID_CONFIG. The sensor uses
+//     sns_pah_access_config::type as the requested access type.
+// c3. The sensor sends responses by publishing sns_pah_access_event
+//     message with msgid SNS_PAH_ACCESS_MSGID_EVENT. The sensor uses
+//     sns_pah_access_event::type as the responded access type.
+
+// Known applications
+// d1. Custom selftests.
+//     When selftests of a sensor is irregular, it makes the driver
+//     change frequently. Or when selftests of a sensor is complex, it's
+//     hard to move the logic of programming to registry files. The
+//     driver provides external access feature for custom selftests, so
+//     that the driver does not contains programs for selftest.
+//     Notice that custom selftests would be in conflict with standard
+//     streaming. It means that custom selftests and standard streaming
+//     should never run simultaneously.
+
+// Message IDs for external access
+enum sns_pah_access_msgid
+{
+  option (nanopb_enumopt).long_names = false;
+
+  // Message type: sns_pah_access_config
+  // Purpose: A request from a client to the sensor.
+  SNS_PAH_ACCESS_MSGID_CONFIG = 678;
+
+  // Message type: sns_pah_access_event
+  // Purpose: An event(ack) responded from the sensor to clients.
+  SNS_PAH_ACCESS_MSGID_EVENT = 878;
+}
+
+// Access type for config/event
+enum sns_pah_access_type
+{
+  option (nanopb_enumopt).long_names = false;
+
+  // Used for restore sensor so that standard sensor requests can work
+  // as usual.
+  SNS_PAH_ACCESS_TYPE_RESTORE = 0;
+
+  // A request to write registers.
+  SNS_PAH_ACCESS_TYPE_WRITE_REG = 1;
+
+  // A client to read registers, then the sensor responds values what
+  // it read.
+  SNS_PAH_ACCESS_TYPE_READ_REG = 2;
+
+  // A request to read gpio state, then the sensor responds values what
+  // it read.
+  SNS_PAH_ACCESS_TYPE_READ_INT_STATE = 3;
+}
+
+// Write register config
+message sns_pah_access_write_reg_config
+{
+  // An array contains multiple pairs of address/value of a register.
+  // The format is { addr1, value1, addr2, value2, addr3, value3, ... }
+  // Hence the number of bytes must be multiples of 2.
+  required bytes addr_value_list = 1;
+}
+
+// Read register config
+message sns_pah_access_read_reg_config
+{
+  // The address of a register. The value is in a range of [0, 255]
+  // although its type is uint32.
+  required uint32 addr = 1;
+
+  // The number of bytes to read.
+  required uint32 read_len = 2;
+}
+
+// Read register event
+message sns_pah_access_read_reg_event
+{
+  // An array contains multiple bytes.
+  repeated bytes value_list = 1;
+}
+
+// Read gpio state event
+message sns_pah_access_read_int_state_event
+{
+  // 1 stands for high, and 0 stands for low, otherwise undefined.
+  required int32 state = 1;
+}
+
+// A request from a client to a sensor
+message sns_pah_access_config
+{
+  message data {
+    option (nanopb_msgopt).no_unions = true;
+    oneof value {
+      sns_pah_access_write_reg_config       write_reg = 1;
+      sns_pah_access_read_reg_config        read_reg = 2;
+    }
+  }
+
+  // The access type of this config.
+  required sns_pah_access_type type = 1;
+
+  // A number is used for identitication. The sensor must respond the
+  // same number in sns_pah_access_event.
+  required uint32 serial_number = 2;
+
+  // Depended on which access type
+  // SNS_PAH_ACCESS_TYPE_RESTORE:           N/A
+  // SNS_PAH_ACCESS_TYPE_WRITE_REG:         write_reg
+  // SNS_PAH_ACCESS_TYPE_READ_REG:          read_reg
+  // SNS_PAH_ACCESS_TYPE_READ_INT_STATE:    N/A
+  optional data config = 3;
+}
+
+// An event(ack) responded from a sensor to clients
+message sns_pah_access_event
+{
+  message data {
+    option (nanopb_msgopt).no_unions = true;
+    oneof value {
+      sns_pah_access_read_reg_event         read_reg = 1;
+      sns_pah_access_read_int_state_event   read_int_state = 2;
+    }
+  }
+
+  // The access type of this event
+  required sns_pah_access_type type = 1;
+
+  // The number must be equal to the one in corresponded
+  // sns_pah_access_config.
+  required uint32 serial_number = 2;
+
+  // Depended on which access type.
+  // SNS_PAH_ACCESS_TYPE_RESTORE:           N/A
+  // SNS_PAH_ACCESS_TYPE_WRITE_REG:         N/A
+  // SNS_PAH_ACCESS_TYPE_READ_REG:          read_reg
+  // SNS_PAH_ACCESS_TYPE_READ_INT_STATE:    read_int_state
+  optional data event = 3;
+}
+

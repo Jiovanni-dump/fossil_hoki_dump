@@ -1,0 +1,3 @@
+service clockwork_proxy /system/bin/ClockworkProxy
+    class main
+    group system

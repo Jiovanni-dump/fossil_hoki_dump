@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <privapp-permissions package="com.fossil.wearables.batterysaver">
+        <permission name="android.permission.MODIFY_PHONE_STATE"/>
+        <permission name="android.permission.WRITE_SECURE_SETTINGS"/>
+        <permission name="android.permission.SHUTDOWN"/>
+        <permission name="com.google.android.wearable.WRITE_SETTINGS"/>
+        <permission name="android.permission.BATTERY_STATS"/>
+        <permission name="com.google.android.clockwork.settings.AMBIENT_SETTINGS"/>
+    </privapp-permissions>
+</permissions>

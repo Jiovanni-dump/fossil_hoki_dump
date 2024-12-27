@@ -1,0 +1,117 @@
+// @file sns_lifeq_lel_config.proto
+//
+// Defines the API for configuration of the LifeQ LEL sensors
+//
+
+syntax = "proto2";
+import "nanopb.proto";
+import "sns_std_sensor.proto";
+
+// Provides the messag ids and structs for configuring the lifeq lel sensor
+//
+// The sensor does not accept the standard SNS_STD_SENSOR_MSGID_SNS_STD_ON_CHANGE_CONFIG
+// as the sampling rate and fifo depth is standard for all sensors
+
+// The sensor can be configured using the request Message: SNS_LIFEQ_LEL_USER_PROFILE_CONFIG
+//
+// Config/event
+enum sns_lifeq_lel_user_profile_msg_id
+{
+  option (nanopb_enumopt).long_names = false;
+  SNS_LIFEQ_LEL_USER_PROFILE_CONFIG = 5333;
+}
+
+// Request Message
+// Data received from client to sensor.
+
+message sns_lifeq_lel_user_profile
+{
+  required float gender_maleAs1_femaleAs2_UnknownAs3 = 1;
+  required float age_years = 2;
+  required float height_m = 3;
+  required float weight_kg = 4;
+  required float maxHeartRate_bpm = 5;
+  required float restingHeartRate_bpm = 6;
+  required float bodyFat_percentage = 7;
+  required float vo2max_ml_pkg_pmin = 8;
+  required float vo2min_ml_pkg_pmin = 9;
+  required float timeZone_minutes = 10;
+  required float current_unixTime_seconds = 11;
+  //if ott_test_mode_logging = 0 (no logging)
+  //if ott_test_mode_logging = 1 (debug output logging)
+  //if ott_test_mode_logging = 2 (input raw acc and ppg logging)
+  //if ott_test_mode_logging = 3 (input raw acc and ppg logging)
+  //if ott_test_mode_logging = 4 (input and resampled raw acc and ppg logging)
+  required float ott_test_mode_logging = 12;
+  //if enable_clc = 0 (enable_clc_config)
+  //if enable_clc = 1 (enable_clc_config)
+  required float enable_clc_config = 13;
+
+}
+
+enum sns_lifeq_lel_test_motion_type_msg_id
+{
+  option (nanopb_enumopt).long_names = false;
+  SNS_LIFEQ_LEL_TEST_MOTION_TYPE = 5335;
+}
+
+// Type of simulated test to perform
+enum sns_lifeq_lel_simulate_motion_test_type
+{
+  option (nanopb_enumopt).long_names = false;
+  // No simulation is done
+  LIFEQ_LEL_TEST_NO_TEST  = 0;
+  // Simulate algo in no motion
+  LIFEQ_LEL_TEST_NO_MOTION  = 1;
+  // Simulate algo in low motion
+  LIFEQ_LEL_TEST_LOW_MOTION  = 2;
+  // Simulate algo in high motion
+  LIFEQ_LEL_TEST_HIGH_MOTION  = 3;
+}
+
+message sns_lifeq_lel_simulate_motion_test_type_config
+{
+  required sns_lifeq_lel_simulate_motion_test_type type = 1;
+}
+
+//MSG ID that will configure and start the SpO2 sensor.
+enum sns_lifeq_lel_spo2_request_msg_id
+{
+  option (nanopb_enumopt).long_names = false;
+  SNS_LIFEQ_LEL_SPO2_CONFIG = 5336;
+}
+
+message sns_lifeq_lel_spo2_request
+{
+  //If enabled, the sensor will attempt to capture periodic SpO2 snippets or 100% duty cycle, depending on the parameters supplied
+  //If disabled, the sensor will do a SPO2 point measure test until either the "timeout_seconds" occurs or a "final value"
+  //is determined from the confidence threshold set
+  required bool is_continuous = 1;
+  //The time period for each measurement. Timeout can be between 15 and 120 seconds. 0 For continuous.
+  required float timeout_seconds = 2;
+  //Once a successful window is captured, how many seconds until the system attempts another measurement. 0 For continuous.
+  required float timeoutBetweenMeasurements_seconds = 3;
+  //The confidence threshold which the Final SPO2 Value will use as a threshold for chosen values in its calculation.
+  //Confidence Threshold can be between 85% and 99%
+  required float confidence_threshold_percentage = 4;
+}
+
+//MSG ID that will sync the LifeQ RHR
+enum sns_lifeq_lel_rhr_sync_msg_id
+{
+  option (nanopb_enumopt).long_names = false;
+  SNS_LIFEQ_LEL_RHR_SYNC = 5337;
+}
+
+message sns_lifeq_lel_rhr_sync_request
+{
+  //Resting heart rate to sync with algorithm.
+  required uint32 rhrBpm = 1;
+}
+
+//MSG ID that will reset and clear internal buffers for the LifeQ basal and daily RHR
+enum sns_lifeq_lel_rhr_reset_msg_id
+{
+  option (nanopb_enumopt).long_names = false;
+  SNS_LIFEQ_LEL_RHR_RESET = 5338;
+}

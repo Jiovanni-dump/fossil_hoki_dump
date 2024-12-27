@@ -1,0 +1,21 @@
+// @file fossil_healthd.proto
+//
+// Copyright (c) 2020 Fossil Group.
+// All Rights Reserved.
+// Confidential and Proprietary - Fossil Group.
+
+syntax = "proto2";
+import "nanopb.proto";
+
+enum fossil_oncharge_msgid
+{
+  option (nanopb_enumopt).long_names = false;
+
+  FOSSIL_SEND_ON_CHARGE_STATUS_REQ = 2200;
+
+}
+
+message fossil_oncharge_req
+{
+  required uint32 is_on_charger = 1;
+}

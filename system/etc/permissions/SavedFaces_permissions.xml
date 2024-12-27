@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <privapp-permissions package="com.fossil.wearables.savedfaceservice">
+        <permission name="com.google.android.permission.SET_WATCH_FACE_PRIVILEGED"/>
+    </privapp-permissions>
+</permissions>

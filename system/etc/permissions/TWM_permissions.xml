@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <privapp-permissions package="com.fossil.twm">
+        <permission name="com.google.android.permission.PROVIDE_SETUP_DEFAULTS"/>
+    </privapp-permissions>
+</permissions>
