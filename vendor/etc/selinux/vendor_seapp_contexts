@@ -1,0 +1,8 @@
+user=system seinfo=platform name=com.google.clockwork.wearqxdm domain=qxdm_app type=system_app_data_file
+user=system seinfo=platform name=com.qualcomm.location.XT isPrivApp=true domain=location_app type=system_app_data_file
+user=_app seinfo=platform name=com.qualcomm.timeservice domain=timeservice_app type=app_data_file levelFrom=all
+user=_app seinfo=platform name=com.qualcomm.qti.sidekickmetrics domain=sidekick_metrics_service type=app_data_file levelFrom=all
+user=_app seinfo=platform name=com.qualcomm.qti.sidekickutility domain=sidekickutility_service type=app_data_file levelFrom=all
+user=system seinfo=platform name=com.google.android.clockwork.brightness domain=boost_service type=system_app_data_file
+user=system seinfo=platform name=com.fossil.wearos.sensoraccessservice domain=sensoraccessservice_app type=system_app_data_file
+user=_app seinfo=platform name=com.fossil.wearable.fspropertyutils domain=fspropertyutils_app type=app_data_file

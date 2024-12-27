@@ -1,0 +1,12 @@
+#####################################################################
+# Copyright (c) 2020 Qualcomm Technologies, Inc.
+# All Rights Reserved.
+# Confidential and Proprietary - Qualcomm Technologies, Inc.
+#####################################################################
+
+service sidekickgraphics-hal-1-2 /vendor/bin/hw/vendor.qti.hardware.sidekickgraphics@1.2-service
+    class early_hal
+    user system
+    group system wakelock
+    shutdown critical
+    capabilities BLOCK_SUSPEND

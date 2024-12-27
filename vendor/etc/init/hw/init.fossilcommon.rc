@@ -1,0 +1,40 @@
+#
+# Copyright (c) 2020 Fossil Group, Inc.
+# All Rights Reserved.
+# Confidential and Proprietary - Fossil Group, Inc.
+#
+
+on property:ro.oem.brand=Fossil
+    setprop ro.boot.vendor.overlay.theme com.google.android.theme.fossil
+    setprop ro.oem.fastpair_id 2A5AAA
+    setprop ro.oem.key1 Fossil
+
+on property:ro.oem.brand=FossilxRazer
+    setprop ro.boot.vendor.overlay.theme com.google.android.theme.fossilxrazer
+    setprop ro.oem.fastpair_id 2A5AAA
+    setprop ro.oem.key1 FossilxRazer
+
+on property:ro.oem.brand=CTZ
+    setprop ro.boot.vendor.overlay.theme com.google.android.theme.ctz
+    setprop ro.oem.fastpair_id 2808F5
+    setprop ro.oem.key1 CTZ
+
+on property:ro.oem.brand=DS
+    setprop ro.boot.vendor.overlay.theme com.google.android.theme.ds
+    setprop ro.oem.fastpair_id C1B5ED
+    setprop ro.oem.key1 DS
+
+on property:ro.oem.brand=EA
+    setprop ro.boot.vendor.overlay.theme com.google.android.theme.ea
+    setprop ro.oem.fastpair_id 9281D3
+    setprop ro.oem.key1 EA
+
+on property:ro.oem.brand=MK
+    setprop ro.boot.vendor.overlay.theme com.google.android.theme.mk
+    setprop ro.oem.fastpair_id A85AFB
+    setprop ro.oem.key1 MK
+
+on property:ro.oem.brand=SK
+    setprop ro.boot.vendor.overlay.theme com.google.android.theme.sk
+    setprop ro.oem.fastpair_id 94780D
+    setprop ro.oem.key1 SK

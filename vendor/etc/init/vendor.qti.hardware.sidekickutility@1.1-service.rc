@@ -1,0 +1,13 @@
+############################################################################
+#
+#Copyright (c) 2020-2021, Qualcomm Technologies, Inc.
+#All Rights Reserved.
+#Confidential and Proprietary - Qualcomm Technologies, Inc.
+#
+###########################################################################
+
+service sidekickutility-hal-1-1 /vendor/bin/hw/vendor.qti.hardware.sidekickutility@1.1-service
+    class hal
+    user system
+    group system wakelock
+    capabilities BLOCK_SUSPEND

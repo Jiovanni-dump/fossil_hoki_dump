@@ -1,0 +1,33 @@
+#
+# Copyright (c) 2020 Fossil Group, Inc.
+# All Rights Reserved.
+# Confidential and Proprietary - Fossil Group, Inc.
+#
+
+on boot
+    chmod 0644 /persist/preoem/unified_boot_mode
+
+# Re-enable the flag which allow postboot script rerun (based on LK's detection)
+on property:ro.boot.postboot_enforce=1 && property:sys.cw_home_ready=1
+    setprop persist.vendor.fossil.postboot_cleanup.enable 1
+
+# Set enable the flag to re-run postboot script in the next bootup.
+on shutdown && property:sys.cw_home_ready=1 && property:persist.vendor.fossil.postboot_cleanup.enable=1
+    setprop persist.vendor.fossil.postboot_cleanup.ota 1
+
+# Run postboot script when user completed/skiped WearOS tutorial.
+on property:persist.vendor.fossil.tutorial_completed=1 && property:persist.vendor.fossil.postboot_cleanup.enable=1
+    start clean_unused_pkgs
+
+# Trigger postboot in second bootup (after OTA).
+on property:sys.cw_home_ready=1 && property:persist.vendor.fossil.postboot_cleanup.ota=1
+    setprop persist.vendor.fossil.postboot_cleanup.ota 0
+    start clean_unused_pkgs
+
+service clean_unused_pkgs /system/bin/init.fossil.postboot_cleanup.sh
+    seclabel u:r:fossil-postboot_cleanup:s0
+    class core
+    user root
+    group root system
+    disabled
+    oneshot

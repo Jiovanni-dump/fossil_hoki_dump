@@ -1,0 +1,6 @@
+#
+# ADDITIONAL VENDOR DEFAULT PROPERTIES
+#
+ro.vndk.version=28
+ro.bt.bdaddr_path=/mnt/vendor/persist/bdaddr.ini
+ro.zygote=zygote32

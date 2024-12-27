@@ -1,0 +1,27 @@
+{
+  "config":{
+    "hw_platform": ["MTP", "IOT", "QRD"],
+    "soc_id": ["416", "437"],
+  },
+  "power":{
+    "owner": "power_manager",
+    ".mcps":{
+    "owner": "power_manager",
+      "min_svs":{ "type": "int", "ver": "0",
+        "data": "200"
+      },
+      "low_svs":{ "type": "int", "ver": "0",
+        "data": "300"
+      },
+      "svs":{ "type": "int", "ver": "0",
+        "data": "450"
+      },
+      "nominal":{ "type": "int", "ver": "0",
+        "data": "600"
+      },
+      "turbo":{ "type": "int", "ver": "0",
+        "data": "600"
+      }
+    }
+  }
+}
